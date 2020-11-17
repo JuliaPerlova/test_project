@@ -1,18 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from 'typeorm';
 
-@Entity()
+import { Token } from 'src/tokens/models/token.entity';
+
+@Entity({ name: 'user' })
 export class User {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column({ type: 'varchar', length: 20 })
+    @Column({ type: 'varchar', unique: true })
     username: string;
 
-    @Column({ type: 'varchar', length: 30 })
+    @Column({ type: 'varchar', length: 30, unique: true })
     email: string;
 
-    @Column({ type: 'varchar', length: 20 })
+    @Column({ type: 'varchar' })
     password: string;
+
+    @OneToMany(() => Token, token => token.author)
+    tokens: Token[];
 
     @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     createDateTime: Date;

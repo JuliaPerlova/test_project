@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from 'typeorm';
 
-@Entity()
-export class Robot {
+@Entity({ name: 'robot' })
+export class Robot extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: string;
 

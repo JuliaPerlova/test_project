@@ -1,35 +1,38 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 import { RobotsService } from './robots.service';
 import { RobotDTO } from './interfaces/robot.dto';
 
 @Controller('robots')
 @ApiTags('robots')
+@UseGuards(JwtAuthGuard)
 export class RobotsController {
     constructor(private readonly appService: RobotsService) {}
 
-    @Get('/robots')
+    @Get()
     getAll() {
         return this.appService.getAll();
     }
     
-    @Post('/robots')
+    @ApiHeader({ name: 'Authorization' })
+    @Post()
     createRobot(@Body() data: RobotDTO) {
         return this.appService.createRobot(data);
     }
 
-    @Get('/robots/:id')
+    @Get('/:id')
     findOne(@Param("id") id: string) {
         return this.appService.findOne(id);
     }
 
-    @Patch('/robots/:id')
+    @Patch('/:id')
     updateRobot(@Param("id") id: string, @Body() data: RobotDTO) {
         return this.appService.updateRobot(id, data);
     }
 
-    @Delete('/robots/:id')
+    @Delete('/:id')
     deleteRobot(@Param("id") id: string) {
         return this.appService.deleteRobot(id);
     }

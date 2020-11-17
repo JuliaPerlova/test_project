@@ -1,31 +1,32 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from "@nestjs/common";
+import { Repository } from "typeorm";
 
 import { RobotDTO } from './interfaces/robot.dto';
-import { RobotRepository } from './robots.repository';
+import { Robot } from "./models/robot.entity";
 
 @Injectable()
 export class RobotsService {
-    constructor(@InjectRepository(RobotRepository) private readonly robotRepository: RobotRepository) {}
+    constructor(@Inject('ROBOT_REPOSITORY')
+    private robotRepository: Repository<Robot>,) {}
 
     async getAll() {
-        return await this.robotRepository.findAll();
+        return await this.robotRepository.find();
     }
 
     async findOne(id: string) {
-        return await this.robotRepository.findOneRobot(id);
+        return await this.robotRepository.findOneOrFail(id);
     }
 
     async createRobot(createRobotDto: RobotDTO) {
-        return await this.robotRepository.createRobot(createRobotDto);
+        return await this.robotRepository.save(createRobotDto);
     }
 
     async updateRobot(id: string, robotDto: RobotDTO) {
-        return await this.robotRepository.updateRobot(id, robotDto);
+        return await this.robotRepository.update(id, robotDto);
     }
 
     async deleteRobot(id: string) {
-        return await this.robotRepository.removeRobot(id);
+        return await this.robotRepository.delete(id);
     }
 
 }
