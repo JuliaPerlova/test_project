@@ -3,8 +3,7 @@ import { IsString, IsUUID, IsEmail, IsDate } from 'class-validator';
 import { User } from 'src/users/models/user.entity';
 import { DeepPartial } from 'typeorm';
 
-export class  TokenDTO implements Readonly<TokenDTO> {
-  @ApiProperty({ required: true })
+export class TokenDTO implements Readonly<TokenDTO> {
   @IsUUID()
   id?: string;
 
@@ -15,4 +14,6 @@ export class  TokenDTO implements Readonly<TokenDTO> {
   @ApiProperty({ required: true })
   @IsEmail()
   author: User | DeepPartial<User>;
+
+  expireDateTime: Date;
 }
