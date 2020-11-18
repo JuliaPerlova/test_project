@@ -14,7 +14,8 @@ export class TokensService {
     }
 
     async createToken(createTokenDto: TokenDTO) {
-        return await this.tokenRepository.save(createTokenDto);
+        const token = await this.tokenRepository.create(createTokenDto);
+        return await this.tokenRepository.save(token);
     }
 
     async deleteToken(token: string) {

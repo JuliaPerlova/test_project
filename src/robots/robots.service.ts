@@ -20,7 +20,8 @@ export class RobotsService {
   }
 
   async createRobot(createRobotDto: RobotDTO) {
-    return await this.robotRepository.save(createRobotDto);
+    const robot = await this.robotRepository.create(createRobotDto);
+    return await this.robotRepository.save(robot);
   }
 
   async updateRobot(id: string, robotDto: RobotDTO) {

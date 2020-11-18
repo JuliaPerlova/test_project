@@ -1,10 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany, PrimaryColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Token } from 'src/tokens/models/token.entity';
-
+ 
 @Entity({ name: 'user' })
-export class User {
-    @PrimaryGeneratedColumn()
+export class User extends BaseEntity {
+    @PrimaryColumn("uuid")
     id: string;
 
     @Column({ type: 'varchar', unique: true })
@@ -24,4 +25,11 @@ export class User {
 
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     lastChangedDateTime: Date;
+
+    @BeforeInsert()
+    addId() {
+        console.log(uuidv4());
+        this.id = uuidv4();
+    }
+
 }

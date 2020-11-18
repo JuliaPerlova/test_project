@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsUUID, } from 'class-validator';
 
 export class RobotDTO implements Readonly<RobotDTO> {
-  @ApiProperty({ required: true })
   @IsUUID()
   id: string;
 

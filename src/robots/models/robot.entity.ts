@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, BaseEntity, BeforeInsert, PrimaryColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity({ name: 'robot' })
 export class Robot extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn('uuid')
     id: string;
 
     @Column({ type: 'varchar', length: 50 })
@@ -16,4 +17,9 @@ export class Robot extends BaseEntity {
 
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     lastChangedDateTime: Date;
+
+    @BeforeInsert()
+    addId() {
+        this.id = uuidv4();
+    }
 }
